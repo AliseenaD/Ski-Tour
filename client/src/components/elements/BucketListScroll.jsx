@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import ScrollableCards from "./ScrollableCards";
 import { Link } from "react-router-dom";
 import '../../style/BucketListScroll.css';
