@@ -160,15 +160,28 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
     background-color: #e3dfdf;
     font-family: "Montserrat", sans-serif;
 }
 
-.form-content {
+.start-form {
     width: 60%;
     background-color: #f7f5f5;
     border-radius: 10px;
+    border: 1px solid gray;
+}
+
+.start-label {
+    margin-bottom: 0.5rem;
+}
+
+.start-select {
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    padding: 0.3rem;
+    font-family: "Montserrat", sans-serif;
 }
 
 .form-submit {

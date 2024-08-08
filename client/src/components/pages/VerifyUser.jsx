@@ -71,17 +71,17 @@ export default function VerifyUser() {
       {showNameForm ? (
         <div className="name-form">
           <p id="form-title">One last thing...</p>
-          <form className="form-content" onSubmit={handleSubmit}>
-            <label className="form-label" htmlFor="name">Your name:</label>
-              <input className="form-select" id="text-input" type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} required></input>
-            <label className="form-label" htmlFor="skierType">Skier or Snowboarder?</label>
-              <select className="form-select" id="skierType" value={skierType} onChange={(e) => setSkierType(e.target.value)} required>
+          <form className="start-form" onSubmit={handleSubmit}>
+            <label className="start-label" htmlFor="name">Your name:</label>
+              <input className="start-select" id="start-text" type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} required></input>
+            <label className="start-label" htmlFor="skierType">Skier or Snowboarder?</label>
+              <select className="start-select" id="skierType" value={skierType} onChange={(e) => setSkierType(e.target.value)} required>
                 <option value="">--Please choose an option--</option>
                 <option value="Ski">Skier</option>
                 <option value="Snowboard">Snowboarder</option>
               </select>
-            <label className="form-label" htmlFor="skierLevel">Skier level:</label>
-              <select className="form-select" id="skierLevel" value={skierLevel} onChange={(e) => setSkierLevel(e.target.value)} required>
+            <label className="start-label" htmlFor="skierLevel">Skier level:</label>
+              <select className="start-select" id="start-level" value={skierLevel} onChange={(e) => setSkierLevel(e.target.value)} required>
                 <option value="">--Please choose an option--</option>
                 <option value="beginner">Beginner</option>
                 <option value="intermediate">Intermediate</option>
