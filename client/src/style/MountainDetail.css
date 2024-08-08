@@ -173,6 +173,10 @@
         flex-direction: column;
     }
 
+    .mountain-information {
+        margin-top: 1rem;
+    }
+
     .info-weather-holder {
         width: 100%;
     }
