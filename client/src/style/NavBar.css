@@ -1,0 +1,134 @@
+.nav-content {
+    margin-bottom: -0.3rem;
+    font-size: 15px;
+    background-color: #f7f5f5;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    justify-content: flex-end;
+    gap: 3rem;
+    margin-right: 3rem;
+}
+
+.link {
+    text-decoration: none;
+    color: #0e2d5c;
+    transition: color 0.6s;
+    border-style: none;
+    cursor: pointer;
+    position: relative;
+}
+
+.link:hover {
+    color: #86a3cf;
+}
+
+svg {
+    position: relative;
+    margin-left: 2rem;
+    margin-bottom: -60px;
+}
+
+#create-account, #login {
+    padding: 10px 25px 10px 25px;
+    border-radius: 20px;
+    transition: all 0.5s;
+    top: -0.6rem;
+}
+
+#create-account {
+    background-color: #205097;
+    color: #f7f5f5;
+}
+
+#create-account:hover {
+    background-color: #476ea9;
+    color: #b6b3b3;
+}
+
+#login {
+    background-color: #d2d6e0;
+}
+
+#login:hover {
+    background-color: #9699a1;
+    color: #05347a;
+}
+
+#profile {
+    padding: 10px 25px 10px 25px;
+    border-radius: 20px;
+    transition: all 0.7s;
+    top: -0.6rem;
+    background-color: #205097;
+    color: #d2d6e0;
+}
+
+#profile:hover {
+    background-color: #476ea9;
+    color: #b6b3b3;
+}
+
+.hamburger {
+    display: none;
+}
+
+.burger-line {
+    width: 2rem;
+    height: 0.25rem;
+    border-radius: 10px;
+    background-color: #4471b3;
+    margin-top: 5px;
+}
+
+@media screen and (max-width: 767px) {
+
+    .nav-content {
+        margin-top: 0px;
+    }
+
+    svg {
+        position: relative;
+        margin-left: 30px;
+        margin-bottom: -60px;
+        top: -25px;
+    }
+
+    .nav-links {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        background-color: #f7f5f5; 
+        max-height: 0px;
+        overflow: hidden;
+        transition: max-height 0.4s ease-in-out;
+        gap: 0px;
+        opacity: 0;
+    }
+
+    .hamburger {
+        position: absolute;
+        right: 40px;
+        top: 1px;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        cursor: pointer;
+    }
+
+    .open {
+        margin-top: 40px;
+        max-height: 500px;
+        opacity: 1;
+    }
+
+    .nav-links li {
+        margin: 10px;
+    }
+
+    .link {
+        background-color: #f6f6f6;
+    }
+}

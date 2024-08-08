@@ -1,0 +1,42 @@
+.weather-display {
+    display: flex;
+    justify-content: center;
+}
+
+.weather-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+    border: 0.5px solid #7e7d7d;
+    border-radius: 10px;
+    margin: 3px;
+}
+
+#date {
+    color: #03214f;
+    margin-bottom: 0;
+}
+
+#condition {
+    color: #626469;
+    margin-top: 0.3rem;
+    margin-bottom: 0;
+    font-size: 15px;
+}
+
+.temperature {
+    margin-top: 0.2rem;
+}
+
+.temperature p {
+    color: #626469;
+    margin: 0.2rem;
+    font-size: 13px;
+}
+
+.weather-day img {
+    width: 50px;
+    height: 50px;
+}

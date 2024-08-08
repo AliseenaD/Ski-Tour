@@ -1,11 +1,15 @@
 import React from "react";
 import * as ReactDOMClient from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./components/Home";
-import VerifyUser from "./components/VerifyUser";
+import Home from "./components/pages/Home";
+import VerifyUser from "./components/pages/VerifyUser";
 import { Auth0Provider } from "@auth0/auth0-react";
 import { AuthTokenProvider } from "./AuthTokenContext";
 import { requestedScopes } from "./constants";
+import Mountains from "./components/pages/Mountains";
+import BucketList from "./components/pages/BucketList";
+import MountainDetail from "./components/pages/MountainDetail";
+import ProfilePage from "./components/pages/ProfilePage";
 
 const container = document.getElementById("root");
 
@@ -26,6 +30,10 @@ root.render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/bucket-list" element={<BucketList />} />
+            <Route path="/mountains" element={<Mountains />} />
+            <Route path="/mountains/:id" element={<MountainDetail />} />
+            <Route path="/profile/:id" element={<ProfilePage />} />
             <Route path="/verify-user" element={<VerifyUser />} />
           </Routes>
         </BrowserRouter>

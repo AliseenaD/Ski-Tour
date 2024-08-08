@@ -1,0 +1,43 @@
+.region-content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.region-title {
+    cursor: pointer;
+    width: 80%;
+    background-color: #05347a;
+    color: #f6f6f6;
+    font-size: 25px;
+    padding: 1rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    transition: background-color 0.7s;
+}
+
+.region-title:hover {
+    background-color: #476ea9;
+}
+
+.arrow-icon {
+    position: relative;
+    top: -0.5rem;
+}
+
+.region-mountains {
+    background-color: #d2d6e0;
+    width: 80%;
+    position: inherit;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease-in-out;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.region-open {
+    max-height: 5000px;
+}

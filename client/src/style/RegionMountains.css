@@ -1,0 +1,14 @@
+.region-content {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+}
+
+.region-list {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding-bottom: 2rem;
+}

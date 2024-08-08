@@ -1,0 +1,48 @@
+.reviews-content {
+    width: 100%;
+}
+
+.reviews-list {
+    list-style: none;
+}
+
+.author-logo {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.profile-logo {
+    top: 1rem;
+    right: 2.2rem;
+}
+
+#rating-author {
+    color: #03214f;
+    font-size: 20px;
+    margin-left: -1.4rem;
+    cursor: pointer;
+}
+
+#rating-title {
+    font-size: 15px;
+    color: #4a4a4c;
+    padding-right: 2rem;
+}
+
+#reviewer-time {
+    color: #5d5d5e;
+    font-size: 12px;
+    margin-top: -10px;
+}
+
+.reviews-list li hr {
+    width: 95%;
+    margin-right: 9%;
+}
+
+#empty-reviews {
+    text-align: center;
+    font-size: 20px;
+    padding: 1rem;
+    color: #626469;
+}

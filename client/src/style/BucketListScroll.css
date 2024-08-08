@@ -1,0 +1,32 @@
+.bucket-list-header {
+    position: relative;
+    font-size: 30px;
+    margin-left: 1rem;
+}
+
+.empty-list-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 3rem;
+}
+
+.adventure-message {
+    font-size: 25px;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.explore-link {
+    color: #f6f6f6;
+    text-decoration: none;
+    padding: 0.7rem 1.2rem 0.7rem 1.2rem;
+    border-radius: 10px;
+    background-color: #134796;
+    transition: background-color 0.7s;
+}
+
+.explore-link:hover {
+    background-color: #0c2e61;
+}

@@ -1,0 +1,41 @@
+.card-container {
+    width: 15rem;
+    height: 15.2rem;
+    background-color: transparent;
+    border-radius: 20px;
+    border-style: none;
+    cursor: pointer;
+    transition: scale 0.5s;
+}
+
+.card-container:hover {
+    scale: 1.05;
+}
+
+.card-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
+}
+
+.picture-area {
+    width: 10.5rem;
+    background-color: #476ea9;
+    height: 10.5rem;
+    margin-bottom: 1.3rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 12px 4px rgba(0, 0, 0, 0.25);
+}
+
+.mountain-title {
+    margin-bottom: 0.3rem;
+    font-size: 1.2rem;
+    color: #03214f;
+}
+
+.mountain-location {
+    color: #626469;
+}

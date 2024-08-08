@@ -1,0 +1,17 @@
+.star-list {
+    display: flex;
+    justify-content: flex-start;
+    list-style: none;
+}
+
+.rating-star {
+    margin-right: -2rem;
+    bottom: 3.5rem;
+    right: 4.5rem;
+}
+
+@media screen and (max-width: 767px) {
+    .rating-star {
+        top: -3.5rem;
+    }
+}

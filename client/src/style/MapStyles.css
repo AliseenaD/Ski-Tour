@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.card-list-content {
+    width: 100%; /* Ensure the container takes the full width */
+    overflow-x: auto; /* Enable horizontal scrolling */
+}
+
+.card-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    overflow-x: auto;
+    width: 400px;
+    flex-direction: row;
+    scroll-behavior: smooth;
+    list-style: none;
+}
+
+.card-list li {
+    scale: 0.8;
+    margin: -20px -40px -10px -20px;
+}
+
+.map-container {
+    width: 100%;
+}
+
+.region-name {
+    font-family: "Montserrat", sans-serif;
+    color: #03214f;
+    font-size: 15px;
+    font-weight: bold;
+}

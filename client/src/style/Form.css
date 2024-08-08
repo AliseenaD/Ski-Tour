@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+.review-form {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-input {
+    width: 90%;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: "Montserrat", sans-serif;
+    border-style: none;
+    border: 1px solid;
+    margin-bottom: 1rem;
+}
+
+.star-rating {
+    display: flex;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.rating-label {
+    margin-left: 0.6rem;
+}
+
+.rating {
+    margin-left: 1rem;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star {
+    cursor: pointer;
+    transition: color 0.2s;
+    bottom: 3.7rem;
+    margin-right: -1.5rem;
+    right: 1.3rem;
+}
+
+#submit-button {
+    background-color: #205097;
+    color: #f7f5f5;
+    transition: background-color 0.6s;
+    cursor: pointer;
+}
+
+#submit-button:hover {
+    background-color: #476ea9;
+}
+
+#cancel-button {
+    background-color: #c7c7c9;
+    cursor: pointer;
+    transition: background-color 0.6s;
+    border: none;
+}
+
+#cancel-button:hover {
+    background-color: #a0a0a3;
+}
+
+@media screen and (max-width: 767px) {
+    .review-form {
+        margin-top: 1rem;
+    }
+
+    .star {
+        top: -3.6rem;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .star {
+        right: 1rem;
+    }
+}

@@ -1,0 +1,63 @@
+.user-review-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.own {
+    margin-top: 4rem;
+}
+
+.user-review-content img {
+    max-width: 50%;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.2);
+    height: auto;
+}
+
+.review-information {
+    width: 100%;
+}
+
+#review-mountain {
+    color: #03214f;
+    font-size: 25px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: color 0.6s;
+    width: 30%;
+}
+
+#review-mountain:hover {
+    color: #205097;
+}
+
+#review-date {
+    font-size: 14px;
+    color: #626469;
+    margin-top: -0.5rem;
+}
+
+#review {
+    font-size: 15px;
+    color: #626469;
+}
+
+
+hr {
+    width: 93%;
+    margin-right: 10%;
+}
+
+.delete-icon {
+    cursor: pointer;
+    bottom: 2rem;
+    left: 40%;
+}
+
+@media screen and (max-width: 500px) {
+    .user-review-content img {
+        max-width: 80%;
+        margin-right: 2rem;
+    }
+}

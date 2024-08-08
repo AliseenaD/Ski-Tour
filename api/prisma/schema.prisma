@@ -14,8 +14,42 @@ datasource db {
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  email        String   @unique
-  auth0Id      String   @unique @default("")
-  name         String?
+  id         Int          @id @default(autoincrement())
+  email      String       @unique
+  auth0Id    String       @unique @default("")
+  name       String
+  skierType  String?
+  skierLevel String?
+  reviews    ReviewItem[]
+  bucketList BucketList[]
+}
+
+model Mountain {
+  id         Int          @id @default(autoincrement())
+  name       String       @unique
+  location   String
+  picture    String
+  passType   String
+  region     String
+  reviews    ReviewItem[]
+  BucketList BucketList[]
+}
+
+model ReviewItem {
+  id         Int      @id @default(autoincrement())
+  title      String   @db.VarChar(500) // 500 Character limit
+  rating     Int
+  createdAt  DateTime @default(now())
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId   Int
+  mountain   Mountain @relation(fields: [mountainId], references: [id])
+  mountainId Int
+}
+
+model BucketList {
+  id         Int      @id @default(autoincrement())
+  mountain   Mountain @relation(fields: [mountainId], references: [id])
+  mountainId Int
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId   Int
 }
