@@ -124,7 +124,7 @@ export default function MountainDetail() {
     async function fetchWeather() {
         const API_KEY = '7a87c6f26fea449393e153805243107';
         try {
-            const response = await axios.get('http://api.weatherapi.com/v1/forecast.json', {
+            const response = await axios.get('https://api.weatherapi.com/v1/forecast.json', {
                 params: {
                     key: API_KEY,
                     q: mountainInfo.location,
