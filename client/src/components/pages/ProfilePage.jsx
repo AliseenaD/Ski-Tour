@@ -144,7 +144,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="profile-reviews">
                     <div className="user-reviews">
-                        <p>Your reviews</p>
+                        <p>Reviews</p>
                     </div>
                     <ul className="user-review-list">
                         {
