@@ -120,7 +120,7 @@ export default function ProfilePage() {
                             {
                                 userData.skierType ? (
                                     userData.skierType === 'Ski' ? <FaPersonSkiing color="#205097" className="logo" size={55} /> : <FaPersonSnowboarding color="#205097" className="logo" size={55} />
-                                ) : <FaUser className="logo" size={55} />
+                                ) : <FaUser className="logo" color="#205097" size={55} />
                             }
                             {
                                 isOwnProfile ? (
@@ -135,7 +135,7 @@ export default function ProfilePage() {
                                 </div>
                             )
                             : (<div className="user-info">
-                                <p id="user-name">{userData.name}</p>
+                                <p id="user-name">{userData.name === userData.email ? 'Profile' : userData.name}</p>
                                 <p id="ski-type">Skier type: { userData.skierType ? displaySkierType(userData.skierType) : 'Not provided' }</p>
                                 <p id="ski-level">Skier level: { userData.skierLevel ? capitalizeFirstLetter(userData.skierLevel) : 'Not provided' }</p>
                             </div>)

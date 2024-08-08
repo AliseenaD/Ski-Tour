@@ -96,13 +96,14 @@ app.get('/api/image-url', async (req, res) => {
 // Edit user info, will require auth
 app.put("/user", requireAuth, async (req, res) => {
   const auth0Id = req.auth.payload.sub;
-  const { skierType, skierLevel } = req.body;
+  const { name, skierType, skierLevel } = req.body;
   try {
     const updatedUser = await prisma.user.update({
       where: {
         auth0Id,
       },
       data: {
+        name,
         skierType,
         skierLevel
       }

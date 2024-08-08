@@ -5,6 +5,7 @@ import { useAuthToken } from "../../AuthTokenContext";
 
 export default function EditProfileForm({ userData, setSettingsView, refreshUserData }) {
     const { logout } = useAuth0(); 
+    const [name, setName] = useState(''); // For name
     const [skierType, setSkierType] = useState(''); // For edit profile
     const [skierLevel, setSkierLevel] = useState(''); // For edit profile
     const { accessToken } = useAuthToken();
@@ -21,6 +22,7 @@ export default function EditProfileForm({ userData, setSettingsView, refreshUser
                         'Authorization': `Bearer ${accessToken}`
                     },
                     body: JSON.stringify({
+                        name,
                         skierType,
                         skierLevel
                     })
@@ -42,6 +44,8 @@ export default function EditProfileForm({ userData, setSettingsView, refreshUser
         <div>
             <p id="form-title">Edit Profile</p>
             <form className="edit-form">
+                <label className="form-label" htmlFor="name">Your name:</label>
+                <input className="form-select" id="text-input" type="text" placeholder="Name" onChange={(e) => setName(e.target.value)} required></input>
                 <label className="form-label" htmlFor="skierType">Skier or Snowboarder?</label>
                 <select className="form-select" id="skierType" value={skierType} onChange={(e) => setSkierType(e.target.value)} required>
                     <option value="">--Please choose an option--</option>
