@@ -158,9 +158,8 @@ body {
 .name-form {
     width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    margin-top: 4rem;
+    justify-content: start;
+    align-items: center;
     flex-direction: column;
     height: 100vh;
     background-color: #e3dfdf;
@@ -168,6 +167,7 @@ body {
 }
 
 .start-form {
+    margin-top: 5rem;
     width: 60%;
     background-color: #f7f5f5;
     border-radius: 10px;
@@ -190,12 +190,16 @@ body {
     font-family: "Montserrat", sans-serif;
 }
 
+.start-form select {
+    padding: 0.5rem;
+    font-size: 12px;
+}
+
 .form-submit {
     width: 100%;
-    margin-bottom: 2.5rem;
     border-radius: 10px;
     border-style: none;
-    padding: 1rem;
+    padding: 0.7rem;
     cursor: pointer;
     transition: background-color 0.6s;
     background-color: #03214f;
