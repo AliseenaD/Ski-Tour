@@ -197,4 +197,8 @@ body {
         border-radius: 0;
         height: 500px;
     }
+
+    .footer-container {
+        height: 200px;
+    }
 }
