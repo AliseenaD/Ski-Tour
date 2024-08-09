@@ -61,6 +61,7 @@ Must force login only when identity is required. For instance, an anonymous user
 - must deploy the API server
 - must deploy the client side
 - must provide deployment link in this readme
+-DEPLOYMENT LINK: https://www.ski-tour.org
 
 ## [Optional] Search/Search Results page
 - Search and results can be on the same page or in separate pages. (e.g. the search bar can be on the home page and the results on a separate page. Or both in a separate search page).
