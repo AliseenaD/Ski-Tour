@@ -41,6 +41,11 @@ export default function VerifyUser() {
 
   // Update user profile information, then navigate to home page
   async function handleSubmit(e) {
+    // Do nothing if form isn't complete
+    if (!name || !skierType || !skierLevel) {
+      window.alert("Cannot leave any portion of the form blank!");
+      return;
+    }
     e.preventDefault();
     try {
       const response = await fetch(`${API_URL}/user`, {

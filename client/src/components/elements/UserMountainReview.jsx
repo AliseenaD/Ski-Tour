@@ -21,6 +21,10 @@ export default function UserMountainReview({ mountain, review, refreshReviews, c
 
      // Fetch the image from backend storage. Have a retry counter that will retry if an image has not loaded
      async function fetchImage(picture) {
+        // Handle invalid data
+        if (!picture || typeof picture !== 'string') {
+            throw new Error('Invalid photo url');
+        }
         try {
             const response = await fetch(`${API_URL}/api/image-url?path=${(picture)}`);
             if (!response.ok) {
@@ -36,6 +40,10 @@ export default function UserMountainReview({ mountain, review, refreshReviews, c
 
     // Delete review in backend
     async function deleteReview() {
+        // handle invalid data
+        if (!review.id) {
+            throw new Error('Invalid review ID');
+        }
         try {
             const response = await fetch(`${API_URL}/reviews/${review.id}`, {
                 method: 'DELETE',
@@ -62,7 +70,7 @@ export default function UserMountainReview({ mountain, review, refreshReviews, c
     }
 
     function formatDate(date) {
-        return format(date, 'dd-MM-yyyy');
+        return format(date, 'MM-dd-yyyy');
     }
 
 

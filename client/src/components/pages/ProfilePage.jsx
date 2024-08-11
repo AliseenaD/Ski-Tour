@@ -69,6 +69,10 @@ export default function ProfilePage() {
 
     // Fetches id specific user info
     async function fetchUser() {
+        // Ensure id is valid
+        if (!id) {
+            throw new Error('Invalid ID');
+        }
         try {
             const response = await fetch(`${API_URL}/user/${id}`);
             if (!response.ok) {

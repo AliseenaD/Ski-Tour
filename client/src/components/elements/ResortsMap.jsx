@@ -22,10 +22,11 @@ export default function ResortsMap( { regions } ) {
 
     return ( 
       // Make sure you set the height and width of the map container otherwise the map won't show
-        <MapContainer center={[latitude, longitude]} zoom={2.5} ref={mapRef} className="map-container">
+        <MapContainer center={[latitude, longitude]} zoom={2.5} ref={mapRef} className="map-container" minZoom={2.5} maxBounds={[[-190, -150], [90, 180]]}>
           <TileLayer
             attribution='Tiles &copy; Esri &mdash; Source: USGS, Esri, TANA, DeLorme, and NPS'
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Terrain_Base/MapServer/tile/{z}/{y}/{x}"
+            noWrap={true}
           />
           {regions.map((region) => (
             region.region.length > 0 ? (

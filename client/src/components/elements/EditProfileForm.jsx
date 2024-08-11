@@ -11,7 +11,13 @@ export default function EditProfileForm({ userData, setSettingsView, refreshUser
     const { accessToken } = useAuthToken();
     const API_URL = process.env.REACT_APP_API_URL;
 
+    // Handle submit of form
     async function handleSubmit(event) {
+        // If any variable blank
+        if (!name || !skierType || !skierLevel) {
+            window.alert("Cannot leave any portion of the form blank!");
+            return;
+        }
         event.preventDefault();
         if (userData) {
             try {

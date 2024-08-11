@@ -14,7 +14,7 @@ export default function ReviewList({ reviews }) {
     }
 
     function formatDate(date) {
-        return format(date, 'dd-MM-yyyy');
+        return format(date, 'MM-dd-yyyy');
     }
 
     return (

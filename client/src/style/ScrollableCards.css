@@ -38,4 +38,7 @@
         display: none;
     }
 
+    .scroll-items {
+        width: 95%;
+    }
 }

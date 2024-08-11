@@ -97,6 +97,10 @@ app.get('/api/image-url', async (req, res) => {
 app.put("/user", requireAuth, async (req, res) => {
   const auth0Id = req.auth.payload.sub;
   const { name, skierType, skierLevel } = req.body;
+  // Ensure valid data
+  if (isNaN(name) || isNaN(skierType) || isNaN(skierLevel)) {
+    return res.status(400).json({ error: "Invalid user input" });
+  }
   try {
     const updatedUser = await prisma.user.update({
       where: {
@@ -181,6 +185,10 @@ app.get("/user/:id", async (req, res) => {
 app.get("/mountains/:mountainId", async (req, res) => {
   try {
     const mountainId = parseInt(req.params.mountainId);
+    // Validate data
+    if (isNaN(mountainId)) {
+      return res.status(400).json({ error: "Invalid mountain ID" });
+    }
     const mountainInfo = await prisma.mountain.findUnique({
       where: {
         id: mountainId,
@@ -227,6 +235,10 @@ app.delete("/bucket-list/:mountainId", requireAuth, async (req, res) => {
   try {
     const auth0Id = req.auth.payload.sub;
     const mountainId = parseInt(req.params.mountainId);
+    // Validate data
+    if (isNaN(mountainId)) {
+      return res.status(400).json({ error: "Invalid mountain ID" });
+    }
     const user = await prisma.user.findUnique({
       where: { auth0Id },
     })
@@ -250,6 +262,10 @@ app.delete("/bucket-list/:mountainId", requireAuth, async (req, res) => {
 app.post("/bucket-list/:mountainId", requireAuth, async (req, res) => {
   const auth0Id = req.auth.payload.sub;
   const mountainId = parseInt(req.params.mountainId);
+  // Validate data
+  if (isNaN(mountainId)) {
+    return res.status(400).json({ error: "Invalid mountain ID" });
+  }
   try {
     const bucketListItem = await prisma.bucketList.create({
       data: {
@@ -269,6 +285,13 @@ app.post("/reviews/:mountainId", requireAuth, async (req, res) => {
   const auth0Id = req.auth.payload.sub;
   const mountainId = parseInt(req.params.mountainId);
   const { title, rating } = req.body
+  // Validate data
+  if (isNaN(mountainId)) {
+    return res.status(400).json({ error: "Invalid mountain ID" });
+  }
+  if (isNaN(title) || isNaN(rating)) {
+    return res.status(400).json({ error: "Invalid body info" })
+  }
   try {
     const reviewItem = await prisma.reviewItem.create({
       data: {
@@ -289,6 +312,9 @@ app.post("/reviews/:mountainId", requireAuth, async (req, res) => {
 app.delete("/reviews/:reviewId", requireAuth, async (req, res) => {
   const auth0Id = req.auth.payload.sub;
   const reviewId = parseInt(req.params.reviewId);
+  if (isNaN(reviewId)) {
+    return res.status(400).json({ error: "Invalid review ID" });
+  }
   try {
     const userData = await prisma.user.findUnique({
       where: { auth0Id },
