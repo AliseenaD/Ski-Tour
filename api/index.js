@@ -98,7 +98,7 @@ app.put("/user", requireAuth, async (req, res) => {
   const auth0Id = req.auth.payload.sub;
   const { name, skierType, skierLevel } = req.body;
   // Ensure valid data
-  if (isNaN(name) || isNaN(skierType) || isNaN(skierLevel)) {
+  if (!name || !skierType || !skierLevel) {
     return res.status(400).json({ error: "Invalid user input" });
   }
   try {
@@ -155,7 +155,7 @@ app.get("/user", requireAuth, async (req, res) => {
 app.get("/user/:id", async (req, res) => {
   try {
     const userId = parseInt(req.params.id);
-    if (isNaN(userId)) {
+    if (!userId) {
       return res.status(400).json({ error: "Invalid user ID" });
     }
     const userData = await prisma.user.findUnique({
@@ -289,7 +289,7 @@ app.post("/reviews/:mountainId", requireAuth, async (req, res) => {
   if (isNaN(mountainId)) {
     return res.status(400).json({ error: "Invalid mountain ID" });
   }
-  if (isNaN(title) || isNaN(rating)) {
+  if (!title || !rating) {
     return res.status(400).json({ error: "Invalid body info" })
   }
   try {
