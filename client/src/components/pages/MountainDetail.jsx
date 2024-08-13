@@ -28,6 +28,7 @@ export default function MountainDetail() {
     const [weatherData, setWeatherData] = useState(null); // Weather data state
     const [userData, setUserData] = useState(null); // Set the user data 
     const API_URL = process.env.REACT_APP_API_URL;
+    const WEATHER_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
     // Get the mountain info based off the id passed within the url
     useEffect(() => {
@@ -126,11 +127,11 @@ export default function MountainDetail() {
 
     // Function to get the weather of the location
     async function fetchWeather() {
-        const API_KEY = '7a87c6f26fea449393e153805243107';
+        console.log(WEATHER_KEY);
         try {
             const response = await axios.get('https://api.weatherapi.com/v1/forecast.json', {
                 params: {
-                    key: API_KEY,
+                    key: WEATHER_KEY,
                     q: mountainInfo.location,
                     days: 3
                 }
