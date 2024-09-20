@@ -4,7 +4,7 @@ Welcome to the Ski Tour Website, your guide to exploring all Epic and Ikon Pass 
 
 Features
 
-•	Mountain Exploration: Browse through all Epic and Ikon pass resorts, organized by region.
+•	Mountain Exploration: Browse through all Epic and Ikon pass resorts, organized by region. \n
 •	User Reviews: View reviews from fellow skiers on each resort.
 •	Create an Account: Sign up to unlock additional features.
   o	Write Reviews: Share your own skiing experiences by reviewing resorts.
