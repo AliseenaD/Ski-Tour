@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAuthToken } from "../../AuthTokenContext";
-import NavBar from "../elements/NavBar";
-import HeaderImage from "../elements/HeaderImage";
-import ScrollableCards from "../elements/ScrollableCards";
-import '../../style/Home.css';
-import BucketListScroll from "../elements/BucketListScroll";
-import CreateAccount from "../elements/CreateAccount";
-import ExploreMountainsBanner from "../elements/ExploreMountainsBanner";
-import Footer from "../elements/Footer";
+import NavBar from "../elements/MultiPageElements/NavBar";
+import HeaderImage from "../elements/HomeElements/HeaderImage";
+import ScrollableCards from "../elements/MultiPageElements/ScrollableCards";
+import '../../style/Pages/Home.css';
+import BucketListScroll from "../elements/MultiPageElements/BucketListScroll";
+import CreateAccount from "../elements/HomeElements/CreateAccount";
+import ExploreMountainsBanner from "../elements/HomeElements/ExploreMountainsBanner";
+import Footer from "../elements/MultiPageElements/Footer";
+import { getUser } from "../../utility/UserApi";
+import { getMountainsInfo } from "../../utility/MountainApi";
 
 export default function Home() {
   const { isAuthenticated, logout } = useAuth0();
@@ -18,7 +20,6 @@ export default function Home() {
   const [popMountains, setPopMountains] = useState([]); // For the top four most popular mountains
   const [bucketList, setBucketList] = useState([]); // Get all the bucketlist items of the user as well
   const [userData, setUserData] = useState(null);
-  const API_URL = process.env.REACT_APP_API_URL;
   
   // Get the mountains to pass to the different scrollables
   useEffect(() => {
@@ -67,36 +68,26 @@ export default function Home() {
   // Function to fetch the mountain info
   async function getMountains() {
     try {
-      const mountainInfo = await fetch(`${API_URL}/mountains`);
-      if (!mountainInfo.ok) {
-        throw new Error("Network response did not work");
-      }
-      const mountainsList = await mountainInfo.json();
-      setMountains(mountainsList);
-      getRandom(mountainsList);
+      const result = await getMountainsInfo();
+      setMountains(result);
+      getRandom(result);
     }
     catch(error) {
-      console.log(error);
+      console.error(error);
     }
   }
 
-    // Fetch user data
+  // Fetch user data
   async function fetchUserData() {
-      try {
-          const response = await fetch(`${API_URL}/user`, {
-              headers: {
-                  Authorization: `Bearer ${accessToken}` 
-              }
-          });
-          if (!response.ok) {
-              throw new Error ('Network response failed');
-          }
-          const data = await response.json();
-          setUserData(data);
-      }
-      catch (error) {
-          console.log('Error fetching data: ', error);
-      }
+    try {
+        const result = await getUser(accessToken);
+        if (result) {
+            setUserData(result);
+        }
+    }
+    catch (error) {
+        console.log('Error fetching data: ', error);
+    }
   }
 
   return (

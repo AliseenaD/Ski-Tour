@@ -1,0 +1,500 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Weather Forecast */
+.weather-display {
+    display: flex;
+    justify-content: center;
+}
+
+.weather-day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    text-align: center;
+    border: 0.5px solid #7e7d7d;
+    border-radius: 10px;
+    margin: 3px;
+}
+
+#date {
+    color: #03214f;
+    margin-bottom: 0;
+}
+
+#condition {
+    color: #626469;
+    margin-top: 0.3rem;
+    margin-bottom: 0;
+    font-size: 15px;
+}
+
+.temperature {
+    margin-top: 0.2rem;
+}
+
+.temperature p {
+    color: #626469;
+    margin: 0.2rem;
+    font-size: 13px;
+}
+
+.weather-day img {
+    width: 50px;
+    height: 50px;
+}
+
+/* Review List */
+.reviews-content {
+    width: 100%;
+}
+
+.reviews-list {
+    list-style: none;
+}
+
+.author-logo {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.profile-logo {
+    top: 1rem;
+    right: 2.2rem;
+}
+
+#rating-author {
+    color: #03214f;
+    font-size: 20px;
+    margin-left: -1.4rem;
+    cursor: pointer;
+}
+
+#rating-title {
+    font-size: 15px;
+    color: #4a4a4c;
+    padding-right: 2rem;
+}
+
+#reviewer-time {
+    color: #5d5d5e;
+    font-size: 12px;
+    margin-top: -10px;
+}
+
+.reviews-list li hr {
+    width: 95%;
+    margin-right: 9%;
+}
+
+#empty-reviews {
+    text-align: center;
+    font-size: 20px;
+    padding: 1rem;
+    color: #626469;
+}
+
+/* Mountain info card */
+.info-weather {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mountain-information {
+    background-color: #f7f5f5;
+    border-radius: 20px;
+    padding: 20px 50px 20px 50px;
+    box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+.title-bucketlist {
+    display: flex;
+    justify-content: space-between;
+}
+
+#bucket-icon {
+    top: 1.5rem;
+    cursor: pointer;
+}
+
+#mountain-name {
+    font-size: 1.6rem;
+    color: #03214f;
+}
+
+#mountain-location {
+    color: #626469;
+    margin-top: -1.3rem;
+}
+
+.mountain-information img {
+    align-self: center;
+    max-width: 80%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.2);
+}
+
+.ratings-pass {
+    display: flex;
+    justify-content: space-between;
+}
+
+#pass-type {
+    margin-top: -0.2rem;
+}
+
+.ratings {
+    margin-top: -1rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+#rating-star {
+    top: 0.7rem;
+    right: 2rem;
+    margin-right: -1.8rem;
+}
+
+#mountain-rating {
+    color: #03214f;
+}
+
+.review-button {
+    background-color: #205097;
+    color: #f7f5f5;
+    border-style: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.6s;
+    font-size: 15px;
+    font-family: "Montserrat", sans-serif;
+}
+
+.review-button:hover {
+    background-color: #476ea9;
+}
+
+.closed {
+    background-color: #626469;
+    transition: none;
+}
+
+.closed:hover {
+    background-color: #626469;
+}
+
+.open {
+    max-height: 500px;
+}
+
+/* Form */
+.review-form {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.form-input {
+    width: 90%;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: "Montserrat", sans-serif;
+    border-style: none;
+    border: 1px solid;
+    margin-bottom: 1rem;
+}
+
+.star-rating {
+    display: flex;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.rating-label {
+    margin-left: 0.6rem;
+}
+
+.rating {
+    margin-left: 1rem;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star {
+    cursor: pointer;
+    transition: color 0.2s;
+    bottom: 3.7rem;
+    margin-right: -1.5rem;
+    right: 1.3rem;
+}
+
+#submit-button {
+    background-color: #205097;
+    color: #f7f5f5;
+    transition: background-color 0.6s;
+    cursor: pointer;
+}
+
+#submit-button:hover {
+    background-color: #476ea9;
+}
+
+#cancel-button {
+    background-color: #c7c7c9;
+    cursor: pointer;
+    transition: background-color 0.6s;
+    border: none;
+}
+
+#cancel-button:hover {
+    background-color: #a0a0a3;
+}
+
+.mountain-content {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.info-weather-holder {
+    width: 40%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: #e9e7e7;
+}
+
+.info-weather {
+    padding: 2rem 1rem 2rem 1rem;
+    width: 93%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mountain-information {
+    background-color: #f7f5f5;
+    border-radius: 15px;
+    padding: 20px 50px 20px 50px;
+    box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+.title-bucketlist {
+    display: flex;
+    justify-content: space-between;
+}
+
+#bucket-icon {
+    top: 1.5rem;
+    cursor: pointer;
+}
+
+#mountain-name {
+    font-size: 1.6rem;
+    color: #03214f;
+}
+
+#mountain-location {
+    color: #626469;
+    margin-top: -1.3rem;
+}
+
+.mountain-information img {
+    align-self: center;
+    max-width: 85%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.2);
+}
+
+.weather-content {
+    margin-top: 30px;
+    width: 80%;
+    background-color: #f7f5f5;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.25);
+    margin-bottom: 30px;
+}
+
+.ratings-pass {
+    display: flex;
+    justify-content: space-between;
+}
+
+.ratings-pass img {
+    border-radius: 0;
+    width: 4rem;
+    height: auto;
+    box-shadow: 0 0 0 0;
+    margin-bottom: 10px;
+}
+
+#pass-type {
+    margin-top: -0.2rem;
+}
+
+.ratings {
+    margin-top: -1rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+#rating-star {
+    top: 0.7rem;
+    right: 2rem;
+    margin-right: -1.8rem;
+}
+
+#mountain-rating {
+    color: #03214f;
+}
+
+.mountain-review-content {
+    background-color: #f7f5f5;
+    width: 55%;
+    display: flex;
+    justify-content: center;
+}
+
+.review-title {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    background-color: #f7f5f5;
+    color: #03214f;
+    font-size: 25px;
+    padding: 0rem 0rem 0.3rem 1rem;
+}
+
+.mountain-reviews {
+    width: 100%;
+    height: 105vh;
+    overflow-y: scroll;
+}
+
+.review-button {
+    background-color: #205097;
+    color: #f7f5f5;
+    border-style: none;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.6s;
+    font-size: 15px;
+    font-family: "Montserrat", sans-serif;
+}
+
+.review-button:hover {
+    background-color: #476ea9;
+}
+
+.closed {
+    background-color: #626469;
+    transition: none;
+}
+
+.closed:hover {
+    background-color: #626469;
+}
+
+.review-box {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.6s ease-in-out;
+}
+
+.open {
+    max-height: 500px;
+}
+
+.detail-footer {
+    margin-top: 3rem;
+}
+
+@media screen and (max-width: 767px) {
+    .mountain-content {
+        margin-top: 3rem;
+        flex-direction: column;
+    }
+
+    .mountain-information {
+        margin-top: 1rem;
+    }
+
+    .info-weather-holder {
+        width: 100%;
+    }
+
+    .info-weather {
+        margin-top: 0px;
+        padding: 0;
+    }
+
+    .mountain-review-content {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .review-form {
+        margin-top: 1rem;
+    }
+
+    .star {
+        top: -3.6rem;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    
+    .mountain-information {
+        margin-top: 0;
+    }
+
+    .mountain-content {
+        padding-top: 0rem;
+    }
+
+    .info-weather-holder {
+        width: 100%;
+    }
+
+    .info-weather {
+        margin-top: 0px;
+        width: 100%;
+    }
+
+    .mountain-information {
+        border-radius: 0;
+        padding: 0.7rem;
+        box-shadow: 0 20px 16px 0px rgba(0, 0, 0, 0.15);
+    }
+
+    .mountain-reviews {
+        width: 100%;
+        border-radius: 0;
+    }
+
+    .star {
+        right: 1rem;
+    }
+}

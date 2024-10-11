@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuthToken } from "../../AuthTokenContext";
 import { useNavigate } from "react-router-dom";
-import '../../style/Home.css';
+import '../../style/Pages/Home.css';
+import { editProfile, verifyUser } from "../../utility/UserApi";
 
 export default function VerifyUser() {
   const [showNameForm, setShowNameForm] = useState(false); // If name form should be displayed
@@ -13,29 +14,21 @@ export default function VerifyUser() {
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    async function verifyUser() {
+    async function checkUser() {
       // make a call to our API to verify the user in our database, if it doesn't exist we'll insert it into our database
       // finally we'll redirect the user to the /app route
-      const data = await fetch(`${process.env.REACT_APP_API_URL}/verify-user`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const user = await data.json();
-
-      if (user.name === user.email) {
+      const result = await verifyUser(accessToken);
+      if (result.name === result.email) {
         setShowNameForm(true);
       }
       // TODO: redirect here to where the user should go after verifying their account
-      if (user.auth0Id && user.name !== user.email) {
+      if (result.auth0Id && result.name !== result.email) {
         navigate("/");
       }
     }
 
     if (accessToken) {
-      verifyUser();
+      checkUser();
     }
   }, [accessToken, navigate]);
 
@@ -48,23 +41,11 @@ export default function VerifyUser() {
     }
     e.preventDefault();
     try {
-      const response = await fetch(`${API_URL}/user`, {
-          method: 'PUT',
-          headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${accessToken}`
-          },
-          body: JSON.stringify({
-              name,
-              skierType,
-              skierLevel
-          })
-      });
-      if (!response.ok) {
-          throw new Error('Network response was not ok');
+      const result = await editProfile(name, skierType, skierLevel, accessToken);
+      if (result && result.success) {
+        setShowNameForm(false);
+        navigate('/');
       }
-      setShowNameForm(false);
-      navigate('/');
     }
     catch (error) {
       console.log(error);

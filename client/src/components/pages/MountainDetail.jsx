@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useParams } from "react-router-dom";
 import { useAuthToken } from "../../AuthTokenContext";
-import NavBar from "../elements/NavBar";
+import NavBar from "../elements/MultiPageElements/NavBar";
 import { FaBucket } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
 import axios from 'axios';
-import ReviewList from "../elements/ReviewList";
-import Form from "../elements/Form";
-import WeatherForecast from "../elements/WeatherForecast";
+import ReviewList from "../elements/MountainDetailElements/ReviewList";
+import Form from "../elements/MountainDetailElements/Form";
+import WeatherForecast from "../elements/MountainDetailElements/WeatherForecast";
 import ikonLogo from "../../photos/Ikon-logo.png";
 import epicLogo from "../../photos/epic-logo.png";
-import '../../style/MountainDetail.css';
-import Footer from "../elements/Footer";
+import '../../style/Pages/MountainDetail.css';
+import Footer from "../elements/MultiPageElements/Footer";
+import { addToBucketList, removeFromBucketList } from "../../utility/BucketListApi";
+import { getMountainImage, getSpecificMountain } from "../../utility/MountainApi";
+import { getUser } from "../../utility/UserApi";
 
 export default function MountainDetail() {
     const { loginWithRedirect, isAuthenticated } = useAuth0();
@@ -27,7 +30,6 @@ export default function MountainDetail() {
     const [reviewOpen, setReviewOpen] = useState(false); // For review box to show
     const [weatherData, setWeatherData] = useState(null); // Weather data state
     const [userData, setUserData] = useState(null); // Set the user data 
-    const API_URL = process.env.REACT_APP_API_URL;
     const WEATHER_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
     // Get the mountain info based off the id passed within the url
@@ -70,16 +72,10 @@ export default function MountainDetail() {
     // Fetch user data
     async function fetchUserData() {
         try {
-            const response = await fetch(`${API_URL}/user`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}` 
-                }
-            });
-            if (!response.ok) {
-                throw new Error ('Network response failed');
+            const result = await getUser(accessToken);
+            if (result) {
+                setUserData(result);
             }
-            const data = await response.json();
-            setUserData(data);
         }
         catch (error) {
             console.log('Error fetching data: ', error);
@@ -89,15 +85,11 @@ export default function MountainDetail() {
     // Fetch mountain information using the id
     async function getMountain() {
         try {
-            const information = await fetch(`${API_URL}/mountains/${mountainId}`);
-            if (!information.ok) {
-                throw new Error("Network response did not work");
-            }
-            const mountainInformation = await information.json();
-            setMountainInfo(mountainInformation);
+            const result = await getSpecificMountain(mountainId);
+            setMountainInfo(result);
         }
         catch(error) {
-            console.log(error);
+            console.error(error);
         }
     }
 
@@ -106,19 +98,11 @@ export default function MountainDetail() {
         await getMountain();
     };
 
-    // Fetch the image from backend storage. Have a retry counter that will retry if an image has not loaded
+    // Fetch the image from backend storage.
     async function fetchImage(picture) {
-        // Check picture type and valid
-        if (!picture || typeof picture !== 'string') {
-            throw new Error('Invalid photo url');
-        }
         try {
-            const response = await fetch(`${API_URL}/api/image-url?path=${(picture)}`);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            const data = await response.json();
-            setImageUrl(data.url);
+            const result = await getMountainImage(picture);
+            setImageUrl(result.url);
             } 
         catch (error) {
             console.error("Error fetching image URL:", error);
@@ -167,24 +151,19 @@ export default function MountainDetail() {
 
     // Handles what happens if a user hits the bucket item
     async function handleBucketClick() {
+        // Reroute if not authenticated
         if (!isAuthenticated) {
             loginWithRedirect();
         }
         try {
-            const response = await fetch(`${API_URL}/bucket-list/${mountainId}`, {
-                method: bucketFill ? 'DELETE' : 'POST',
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            if (!response.ok) {
-                throw new Error ('Failed to update bucket-list');
+            const result = bucketFill ? await removeFromBucketList(id, accessToken) : await addToBucketList(id, accessToken)
+            // If successful reset bucketfill to opposite of what it is now
+            if (result && result.success) {
+                setBucketFill(!bucketFill);
             }
-            setBucketFill(!bucketFill);
         }
         catch (error) {
-            console.log("Error updating list:", error);
+            console.error("Error updating list:", error);
         }
     }
 

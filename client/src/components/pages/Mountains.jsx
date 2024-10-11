@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { useAuthToken } from "../../AuthTokenContext";
 import { useAuth0 } from "@auth0/auth0-react";
-import NavBar from "../elements/NavBar";
-import ExploreHeader from "../elements/ExploreHeader";
-import '../../style/Mountains.css';
+import NavBar from "../elements/MultiPageElements/NavBar";
+import ExploreHeader from "../elements/MountainElements/ExploreHeader";
+import '../../style/Pages/Mountains.css';
 import { GoSearch } from "react-icons/go";
 import { FaArrowRight } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import RegionMountains from "../elements/RegionMountains";
-import ResortsMap from "../elements/ResortsMap";
-import Footer from "../elements/Footer";
+import RegionMountains from "../elements/MountainElements/RegionMountains";
+import ResortsMap from "../elements/MultiPageElements/ResortsMap";
+import Footer from "../elements/MultiPageElements/Footer";
+import { getUser } from "../../utility/UserApi";
+import { getMountainsInfo } from "../../utility/MountainApi";
 
 export default function Mountains() {
     const { isAuthenticated } = useAuth0();
@@ -129,16 +131,10 @@ export default function Mountains() {
     // Fetch user data
     async function fetchUserData() {
         try {
-            const response = await fetch(`${API_URL}/user`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}` 
-                }
-            });
-            if (!response.ok) {
-                throw new Error ('Network response failed');
+            const result = await getUser(accessToken);
+            if (result) {
+                setUserData(result);
             }
-            const data = await response.json();
-            setUserData(data);
         }
         catch (error) {
             console.log('Error fetching data: ', error);
@@ -158,12 +154,8 @@ export default function Mountains() {
     // Get the mountains to be used on page
     async function getMountains() {
         try {
-            const mountainInfo = await fetch(`${API_URL}/mountains`);
-            if (!mountainInfo.ok) {
-                throw new Error("Network response did not work");
-            }
-            const mountainsList = await mountainInfo.json();
-            setMountains(mountainsList);
+            const result = await getMountainsInfo();
+            setMountains(result);
         }
         catch(error) {
             console.log(error);

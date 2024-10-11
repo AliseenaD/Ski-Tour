@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "../elements/NavBar";
+import NavBar from "../elements/MultiPageElements/NavBar";
 import { useParams } from "react-router-dom";
 import { useAuthToken } from "../../AuthTokenContext";
 import { useAuth0 } from "@auth0/auth0-react";
 import { IoSettingsSharp } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { FaPersonSkiing, FaPersonSnowboarding } from "react-icons/fa6";
-import '../../style/ProfilePage.css';
-import UserMountainReview from "../elements/UserMountainReview";
-import EditProfileForm from "../elements/EditProfileForm";
-import Footer from "../elements/Footer";
+import '../../style/Pages/ProfilePage.css';
+import UserMountainReview from "../elements/ProfileElements/UserMountainReview";
+import EditProfileForm from "../elements/ProfileElements/EditProfileForm";
+import Footer from "../elements/MultiPageElements/Footer";
+import { getSpecificUser, getUser } from "../../utility/UserApi";
 
 export default function ProfilePage() {
     const { accessToken } = useAuthToken();
@@ -51,16 +52,10 @@ export default function ProfilePage() {
     // Fetch current user's data
     async function fetchCurrentUser() {
         try {
-            const response = await fetch(`${API_URL}/user`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}` 
-                }
-            });
-            if (!response.ok) {
-                throw new Error ('Network response failed');
+            const result = await getUser(accessToken);
+            if (result) {
+                setCurrentUser(result);
             }
-            const data = await response.json();
-            setCurrentUser(data);
         }
         catch (error) {
             console.log('Error fetching data: ', error);
@@ -74,15 +69,13 @@ export default function ProfilePage() {
             throw new Error('Invalid ID');
         }
         try {
-            const response = await fetch(`${API_URL}/user/${id}`);
-            if (!response.ok) {
-                throw new Error('Network response failed');
+            const result = await getSpecificUser(id);
+            if (result) {
+                setUserData(result);
             }
-            const data = await response.json();
-            setUserData(data);
         }
         catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }
 

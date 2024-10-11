@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "../elements/NavBar";
+import NavBar from "../elements/MultiPageElements/NavBar";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useAuthToken } from "../../AuthTokenContext";
-import '../../style/BucketList.css';
-import Footer from "../elements/Footer";
-import ResortsMap from "../elements/ResortsMap";
-import MountainPreviewCard from "../elements/MountainPreviewCard";
+import '../../style/Pages/BucketList.css';
+import Footer from "../elements/MultiPageElements/Footer";
+import ResortsMap from "../elements/MultiPageElements/ResortsMap";
+import MountainPreviewCard from "../elements/MultiPageElements/MountainPreviewCard";
+import { getUser } from "../../utility/UserApi";
 
 export default function BucketList() {
     const { loginWithRedirect } = useAuth0();
@@ -95,17 +96,11 @@ export default function BucketList() {
     // Fetch user data
     async function fetchUserData() {
         try {
-            const response = await fetch(`${API_URL}/user`, {
-                headers: {
-                    Authorization: `Bearer ${accessToken}` 
-                }
-            });
-            if (!response.ok) {
-                throw new Error ('Network response failed');
+            const result = await getUser(accessToken);
+            if (result) {
+                setUser(result);
+                setBucketList(result.bucketList);
             }
-            const data = await response.json();
-            setUser(data);
-            setBucketList(data.bucketList);
         }
         catch (error) {
             console.log('Error fetching data: ', error);
