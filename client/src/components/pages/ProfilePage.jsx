@@ -156,7 +156,7 @@ export default function ProfilePage() {
                                     <p className="user-info-description"> { userData.skierLevel ? capitalizeFirstLetter(userData.skierLevel) : 'Not provided' }</p>
                                 </div>
                                 <div className="user-information-group">
-                                    <p className="user-info-label">Mountains reviewed:</p>
+                                    <p className="user-info-label">Different mountains reviewed:</p>
                                     <p className="user-info-description"> {mountainsReviewed}</p>
                                 </div>
                             </div>)
