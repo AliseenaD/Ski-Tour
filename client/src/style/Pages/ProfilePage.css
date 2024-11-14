@@ -1,5 +1,6 @@
 /* User mountain review */
 .user-review-content {
+    margin-top: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -9,7 +10,7 @@
     margin-top: 4rem;
 }
 
-.user-review-content img {
+.user-mountain-picture {
     max-width: 50%;
     border-radius: 10px;
     box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.2);
@@ -79,6 +80,14 @@ hr {
     box-shadow: 0 8px 16px 4px rgba(0, 0, 0, 0.25);
 }
 
+.profile-photo {
+    width: 110px;
+    height: 110px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 100px;
+}
+
 .icon-settings {
     margin-top: 1rem;
     display: flex;
@@ -112,9 +121,13 @@ hr {
     color: #03214f;
 }
 
-#ski-type, #ski-level {
+.user-info-label {
     font-size: 15px;
     color: #626469;
+}
+
+.user-info-description {
+    color: #03214f;
 }
 
 .profile-reviews {
@@ -154,6 +167,39 @@ hr {
 
 #text-input {
     border: 1px solid rgb(140, 139, 139);
+}
+
+.user-information-group {
+    margin-top: -1rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.profile-photo-button {
+    position: relative;
+    margin: 1rem auto;
+    border: 1px solid #476ea9;
+    background-color: transparent;
+    color: #476ea9;
+    box-sizing: border-box;
+    font-size: 15px;
+    padding: 0.2rem;
+    width: 80%;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.profile-photo-button:hover {
+    background-color:#476ea9;
+    color: #f7f5f5;
+}
+
+.profile-photo-notification {
+    position: relative;
+    margin: 0 auto;
 }
 
 .edit-form button {
@@ -229,7 +275,7 @@ hr {
 
 
 @media screen and (max-width: 500px) {
-    .user-review-content img {
+    .user-mountain-picture {
         max-width: 80%;
         margin-right: 2rem;
     }

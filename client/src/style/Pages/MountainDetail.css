@@ -1,5 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* Review Photos */
+.review-photos {
+    margin: 0 2rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: flex-start;
+    overflow: scroll;
+}
+
+.mock-photo {
+    height: 100px;
+    width: 100px;
+    background-color: #476ea9;
+    border-radius: 5px;
+    flex-shrink: 0;
+}
+
+.review-photos-header {
+    color: #03214f;
+    font-size: 25px;
+    padding: 0rem 0rem 0.3rem 1rem;
+}
+
+.review-profile-photo {
+    width: 50px;
+    height: 50px;
+    background-position: center;
+    background-size: cover;
+    border-radius: 50px;
+    margin-bottom: 1.5rem;
+}
+
 /* Weather Forecast */
 .weather-display {
     display: flex;
@@ -53,6 +85,13 @@
     list-style: none;
 }
 
+.review-item {
+    margin-top: 1rem;
+    box-sizing: border-box;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid gray;
+}
+
 .author-logo {
     display: flex;
     justify-content: flex-start;
@@ -63,11 +102,15 @@
     right: 2.2rem;
 }
 
-#rating-author {
+#rating-author, #rating-author-picture {
     color: #03214f;
     font-size: 20px;
     margin-left: -1.4rem;
     cursor: pointer;
+}
+
+#rating-author-picture {
+    margin-left: 0.5rem;
 }
 
 #rating-title {
@@ -92,6 +135,58 @@
     font-size: 20px;
     padding: 1rem;
     color: #626469;
+}
+
+.review-images {
+    display: flex;
+    justify-content: flex-start;
+    overflow-x: scroll;
+    gap: 1rem;
+}
+
+.loaded-image-background {
+    position: fixed;
+    z-index: 11;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(34, 34, 34, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.review-photo-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-right: 2rem;
+}
+
+.photo-arrows {
+    cursor: pointer;
+}
+
+.current-photovisual {
+    max-width: 100%;
+    max-height: 750px;
+    border-radius: 5px;
+    margin-left: 2rem;
+}
+
+.image-delete {
+    position: absolute;
+    top: 40px;
+    right: 80px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 767px) {
+    .image-delete {
+        right: 20px;
+    }
 }
 
 /* Mountain info card */
@@ -429,6 +524,30 @@
 
 .detail-footer {
     margin-top: 3rem;
+}
+
+.form-file {
+    display: none;
+}
+
+.upload-button {
+    margin: 1rem auto 2rem auto;
+    border: 1px solid #476ea9;
+    background-color: transparent;
+    color: #476ea9;
+    box-sizing: border-box;
+    font-size: 15px;
+    padding: 0.5rem;
+    width: 80%;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.upload-button:hover {
+    background-color:#476ea9;
+    color: #f7f5f5;
 }
 
 @media screen and (max-width: 767px) {

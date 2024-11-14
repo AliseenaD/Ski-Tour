@@ -14,14 +14,15 @@ import epicLogo from "../../photos/epic-logo.png";
 import '../../style/Pages/MountainDetail.css';
 import Footer from "../elements/MultiPageElements/Footer";
 import { addToBucketList, removeFromBucketList } from "../../utility/BucketListApi";
-import { getMountainImage, getSpecificMountain } from "../../utility/MountainApi";
+import { getSpecificMountain } from "../../utility/MountainApi";
 import { getUser } from "../../utility/UserApi";
+import { IoIosClose } from "react-icons/io";
+import { FaArrowRight, FaArrowLeft } from "react-icons/fa";
 
 export default function MountainDetail() {
     const { loginWithRedirect, isAuthenticated } = useAuth0();
     const { accessToken } = useAuthToken();
     const [mountainInfo, setMountainInfo] = useState(null); // For the specific info
-    const [imageUrl, setImageUrl] = useState(null); // For image url
     const [mountainReviews, setMountainReviews] = useState([]); // For reviews
     const { id } = useParams(); // For id from url
     const mountainId = parseInt(id);
@@ -31,16 +32,27 @@ export default function MountainDetail() {
     const [weatherData, setWeatherData] = useState(null); // Weather data state
     const [userData, setUserData] = useState(null); // Set the user data 
     const WEATHER_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+    const [totalPhotos, setTotalPhotos] = useState([]);
+    const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
+    const [photoVisualOpen, setPhotoVisualOpen] = useState(false);
 
     // Get the mountain info based off the id passed within the url
     useEffect(() => {
         getMountain(); 
     },[mountainId]);
 
+    // Add all photos to total pictures upon reviews
+    useEffect(() => {
+        if (mountainReviews.length > 0 ) {
+            const actualReviews = mountainReviews[0];
+            const totalPhotos = actualReviews.filter((review) => review.photos && review.photos.length > 0).flatMap(review => review.photos).map(photo => photo.picture);
+            setTotalPhotos(totalPhotos);
+        }
+    }, [mountainReviews]);
+
     // Get the image URL
     useEffect(() => {
         if (mountainInfo) {
-            fetchImage(mountainInfo.picture);
             getAverageRating();
             fetchWeather();
         }
@@ -96,17 +108,6 @@ export default function MountainDetail() {
     // Refresh the mountain data after review is submitted
     const refreshMountainData = async () => {
         await getMountain();
-    };
-
-    // Fetch the image from backend storage.
-    async function fetchImage(picture) {
-        try {
-            const result = await getMountainImage(picture);
-            setImageUrl(result.url);
-            } 
-        catch (error) {
-            console.error("Error fetching image URL:", error);
-        }
     };
 
     // Function to get the weather of the location
@@ -172,6 +173,26 @@ export default function MountainDetail() {
         return (<p>Loading...</p>);
     }
 
+    // Handle close of the photo viewer
+    function handleClose() {
+        setPhotoVisualOpen(false);
+        setCurrentPhotoIndex(0);
+    }
+
+    // Handles the opening of photoviewer given an index
+    function handleOpen(index) {
+        setPhotoVisualOpen(true);
+        setCurrentPhotoIndex(index);
+    }
+
+    // Handle arrow clicks when photos are open
+    function handleArrowClick(amount) {
+        if (currentPhotoIndex + amount < 0 || currentPhotoIndex + amount >= totalPhotos.length) {
+            return;
+        }
+        setCurrentPhotoIndex(index => index + amount);
+    }
+    
     return (
         <div className="mountain-detail-page">
             <NavBar userData={userData} />
@@ -179,7 +200,7 @@ export default function MountainDetail() {
                 <div className="info-weather-holder">
                     <div className="info-weather">
                         <div className="mountain-information">
-                            <img src={imageUrl} alt={`${mountainInfo.name} resort`} />
+                            <img src={mountainInfo.picture} alt={`${mountainInfo.name} resort`} />
                             <div className="title-bucketlist">
                                 <p id="mountain-name">{mountainInfo.name}</p>
                                 <FaBucket id="bucket-icon" size={30} data-testid="bucket-icon" color={bucketFill ? '#205097' : '#b3afaf'} onClick={handleBucketClick} />
@@ -207,6 +228,35 @@ export default function MountainDetail() {
                 </div>
                 <div className="mountain-review-content">
                     <div className="mountain-reviews">
+                        {totalPhotos && totalPhotos.length > 0 ? (
+                        <div className="review-photos-container">
+                            <div className="review-photos-header">
+                                <p>Photos</p>
+                            </div>
+                            <div className="review-photos">
+                                {totalPhotos.map((photo, index) => (
+                                    <div className="review-photo"
+                                    key={index} 
+                                    onClick={() => handleOpen(index)}
+                                    style={{backgroundImage:`url(${photo}`}} />
+                                ))}
+                            </div>
+                        </div>
+                        ) : ''}
+                        {photoVisualOpen ? (
+                            <div className="loaded-image-background">
+                                <IoIosClose onClick={() => handleClose()} className="image-delete" size={60} color="white" />
+                                <div className="review-photo-row">
+                                    <div className="arrow-container">
+                                        <FaArrowLeft className="preview-arrows" size={30} color="#476ea9" onClick={() => handleArrowClick(-1)} />
+                                    </div>
+                                    <img className="current-photovisual" src={totalPhotos[currentPhotoIndex]} alt={`review photo ${currentPhotoIndex}`} />
+                                    <div className="arrow-container">
+                                        <FaArrowRight className="preview-arrows" size={30} color="#476ea9" onClick={() => handleArrowClick(1)} />
+                                    </div>
+                                </div>
+                            </div>
+                        ) : ''}
                         <div className="review-title">
                             <p>Reviews</p>
                         </div>

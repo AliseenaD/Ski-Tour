@@ -1,7 +1,7 @@
 const API_URL = process.env.REACT_APP_API_URL;
 
 // Post a new review for a mountain 
-export async function postReview(id, accessToken, reviewText, reviewRating) {
+export async function postReview(id, accessToken, reviewText, reviewRating, photos) {
     try {
         const response = await fetch(`${API_URL}/reviews/${id}`, {
             method: 'POST',
@@ -11,7 +11,8 @@ export async function postReview(id, accessToken, reviewText, reviewRating) {
             },
             body: JSON.stringify({
                 title: reviewText,
-                rating: reviewRating
+                rating: reviewRating,
+                photos: photos
             })
         });
         if (!response.ok) {

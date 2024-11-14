@@ -6,7 +6,7 @@ import morgan from "morgan";
 import cors from "cors";
 import { auth } from "express-oauth2-jwt-bearer";
 import { initializeApp } from "firebase/app";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, getDownloadURL, uploadBytes, StorageError, uploadString, deleteObject } from "firebase/storage";
 
 // this is a middleware that will validate the access token sent by the client
 const requireAuth = auth({
@@ -18,8 +18,8 @@ const requireAuth = auth({
 const app = express();
 
 app.use(cors());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.json({limit: '50mb'}));
 app.use(morgan("dev"));
 
 const { PrismaClient } = pkg;
@@ -35,6 +35,13 @@ const firebaseConfig = {
   appId: process.env.FIREBASE_APP_ID,
   measurementId: "G-R5CC7MRVHN"
 };
+
+// Initialize a cache for mountains so redundant searches are not made
+let cache = {
+  time: 0,
+  mountainData: null
+};
+const cacheDuration = 60 * 1000; // Duration of one minute for cache
 
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
@@ -76,46 +83,74 @@ app.post("/verify-user", requireAuth, async (req, res) => {
   }
 });
 
-// Get photos for the mountains
-app.get('/api/image-url', async (req, res) => {
-  const imagePath = req.query.path;
-  if (!imagePath) {
-    return (res.status(400).json({error: 'Image path is required'}));
-  }
-  try {
-    const storage = getStorage(firebase);
-    const imageRef = ref(storage, imagePath);
-    const url = await getDownloadURL(imageRef);
-    res.json({url});
-  }
-  catch(error) {
-    console.log("Error generating url: " + error);
-  }
-});
-
 // Edit user info, will require auth
 app.put("/user", requireAuth, async (req, res) => {
   const auth0Id = req.auth.payload.sub;
-  const { name, skierType, skierLevel } = req.body;
+  const { name, skierType, skierLevel, photo } = req.body;
   // Ensure valid data
   if (!name || !skierType || !skierLevel) {
     return res.status(400).json({ error: "Invalid user input" });
   }
   try {
-    const updatedUser = await prisma.user.update({
-      where: {
-        auth0Id,
-      },
-      data: {
-        name,
-        skierType,
-        skierLevel
+    const storage = getStorage()
+    // If image was included, remove old image from firebase and add new one and update
+    if (photo && typeof photo === 'string') {
+      // Get the user
+      const userToUpdate = await prisma.user.findUnique({
+        where: {
+          auth0Id,
+        }
+      });
+      // Check if user exists
+      if (!userToUpdate) {
+        return res.status(404).json({ error: 'User not found' });
       }
-    });
-    res.json(updatedUser);
+      // If there is a picture then replace it by deleting old picture in firebase
+      if (userToUpdate.picture) {
+        await deletePhoto(userToUpdate.picture);
+      }
+      // Now add the new picture
+      const fileExtension = photo.split(';')[0].split('/')[1];
+      const filename = `profile/${userToUpdate.id}/${Date.now()}.${fileExtension}`;
+      const photoRef = ref(storage, filename);
+      await uploadString(photoRef, photo, 'data_url');
+
+        // Get new download URL using same pattern as migration script
+        const imageRef = ref(storage, filename);
+        const picture = await getDownloadURL(imageRef);
+
+        // Now update the user
+        const updatedUser = await prisma.user.update({
+          where: {
+            auth0Id,
+          },
+          data: {
+            name,
+            skierType,
+            skierLevel,
+            picture
+          }
+        });
+        res.json(updatedUser);
+    }
+    // If no picture then just update based on the name, skier type, and skier level
+    else {
+      const updatedUser = await prisma.user.update({
+        where: {
+          auth0Id,
+        },
+        data: {
+          name,
+          skierType,
+          skierLevel
+        }
+      });
+      res.json(updatedUser);
+    }
   }
   catch(error) {
     console.log(error);
+    return res.status(500).json({ error: 'An error occurred while updating the user' });
   }
 });
 
@@ -130,7 +165,13 @@ app.get("/user", requireAuth, async (req, res) => {
       include: {
         reviews: {
           include: {
-            mountain: true // Include mountain details
+            mountain: true, // Include mountain details
+            photos: {
+              select: {
+                id: true,
+                picture: true
+              }
+            }
           }
         },
         bucketList: {
@@ -165,9 +206,15 @@ app.get("/user/:id", async (req, res) => {
       include: {
         reviews: {
           include: {
-            mountain: true,
+            mountain: true, // Include mountain details
+            photos: {
+              select: {
+                id: true,
+                picture: true
+              }
+            }
           }
-        }
+        },
       }
     });
     if (!userData) {
@@ -202,6 +249,13 @@ app.get("/mountains/:mountainId", async (req, res) => {
                 name: true,
                 skierLevel: true,
                 skierType: true,
+                picture: true
+              }
+            },
+            photos: {
+              select: {
+                id: true,
+                picture: true
               }
             }
           }
@@ -218,11 +272,23 @@ app.get("/mountains/:mountainId", async (req, res) => {
 // Get info regarding mountains, will not need userAuth to do this
 app.get("/mountains", async (req, res) => {
   try {
+    // First check to see if mountains are in cache
+    const currentTime = Date.now();
+    if (cache.mountainData && (currentTime - cache.time <= cacheDuration)) {
+      return res.json(cache.mountainData);
+    }
+
     const mountains = await prisma.mountain.findMany({
       include: {
         reviews: true // include reviews for sorting purposes on the home page
       }
     });
+
+    // Set the cache to the current mountains
+    cache = {
+      time: currentTime,
+      mountainData: mountains
+    }
     res.json(mountains);
   }
   catch(error) {
@@ -284,7 +350,7 @@ app.post("/bucket-list/:mountainId", requireAuth, async (req, res) => {
 app.post("/reviews/:mountainId", requireAuth, async (req, res) => {
   const auth0Id = req.auth.payload.sub;
   const mountainId = parseInt(req.params.mountainId);
-  const { title, rating } = req.body
+  const { title, rating, photos } = req.body
   // Validate data
   if (isNaN(mountainId)) {
     return res.status(400).json({ error: "Invalid mountain ID" });
@@ -293,6 +359,8 @@ app.post("/reviews/:mountainId", requireAuth, async (req, res) => {
     return res.status(400).json({ error: "Invalid body info" })
   }
   try {
+    const storage = getStorage(firebase);
+
     const reviewItem = await prisma.reviewItem.create({
       data: {
         title,
@@ -301,14 +369,78 @@ app.post("/reviews/:mountainId", requireAuth, async (req, res) => {
         mountain: { connect: { id: parseInt(mountainId) } }
       }
     });
-    res.json(reviewItem);
+
+    // Add each image to firebase and then create a reviewPhoto for it
+    if (photos && photos.length > 0) {
+      const photoPromises = photos.map(async (photoData) => {
+        try {
+          const fileExtension = photoData.split(';')[0].split('/')[1];
+          const filename = `review/${reviewItem.id}/${Date.now()}.${fileExtension}`;
+          const photoRef = ref(storage, filename);
+
+          // First upload the photo
+          await uploadString(photoRef, photoData, 'data_url');
+
+          // Get new download URL using same pattern as migration script
+          const imagePath = filename;  // Since we're already using the direct filename
+          const imageRef = ref(storage, imagePath);
+          const newUrl = await getDownloadURL(imageRef);
+
+          // Create reviewPhoto record
+          return prisma.reviewPhoto.create({
+            data: {
+              picture: newUrl,
+              reviewId: reviewItem.id
+            }
+          });
+        }
+        catch (error) {
+          console.error("Error adding photo to firebase:", error);
+        }
+      });
+      // Wait for all photo uploads and entries to complete
+      await Promise.all(photoPromises);
+    }
+
+    // Return complete review
+    const completeReview = await prisma.reviewItem.findUnique({
+      where: { id: reviewItem.id },
+      include: {
+        photos: true,
+        author: {
+          select: {
+            id: true,
+            name: true,
+            skierLevel: true,
+            skierType: true
+          }
+        },
+        mountain: true
+      }
+    });
+
+    res.json(completeReview);
   }
   catch (error) {
     console.log(error);
   }
-})
+});
 
-// Delete a review
+// Helper function to delete a photo from firebase
+async function deletePhoto(imageUrl) {
+  try {
+    const storage = getStorage();
+    // Get the URL path and find the image reference
+    const imagePath = decodeURIComponent(imageUrl.split('/o/')[1].split('?')[0]);
+    const imageRef = ref(storage, imagePath);
+    await deleteObject(imageRef);
+  }
+  catch(error) {
+    console.error("Error occurred while deleting images from firebase:", error);
+  }
+}
+
+// Delete a review and associated photos
 app.delete("/reviews/:reviewId", requireAuth, async (req, res) => {
   const auth0Id = req.auth.payload.sub;
   const reviewId = parseInt(req.params.reviewId);
@@ -320,7 +452,31 @@ app.delete("/reviews/:reviewId", requireAuth, async (req, res) => {
       where: { auth0Id },
     })
     if (!userData) {
-      return ref.status(404).json({ error: "User not found" });
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Get the review to find the images to delete
+    const reviewToDelete = await prisma.reviewItem.findFirst({
+      where: {
+        id: reviewId,
+        authorId: userData.id
+      },
+      include: {
+        photos: true
+      }
+    });
+
+    // Throw error if cannot find review
+    if (!reviewToDelete) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    // Delete all of the images from the firebase if review has photos
+    if (reviewToDelete.photos && reviewToDelete.photos.length > 0) {
+      const deletePromises = reviewToDelete.photos.map(photo => 
+        deletePhoto(photo.picture)
+      );
+      await Promise.allSettled(deletePromises);
     }
     const deletedReview = await prisma.reviewItem.delete({
       where: {
@@ -337,7 +493,7 @@ app.delete("/reviews/:reviewId", requireAuth, async (req, res) => {
     console.log(error);
     res.status(500).json({ error: "An error occurred while deleting the review" });
   }
-})
+});
 
 const PORT = parseInt(process.env.PORT) || 8080;
 app.listen(PORT, () => {

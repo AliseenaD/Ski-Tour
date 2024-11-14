@@ -16,7 +16,7 @@
 
 .bucketlist-scroll {
     width: 30%;
-    overflow-y: scroll;
+    overflow: scroll;
     scroll-behavior: smooth;
 }
 
@@ -59,11 +59,33 @@
 }
 
 @media screen and (max-width: 650px) {
+    .bucketlist-section {
+        flex-direction: column;
+    }
+
+    .bucketlist-scroll {
+        overflow: hidden;
+        height: 650px;
+    }
+
+    .bucket-mountains {
+        flex-wrap: nowrap;
+        overflow-x: scroll;
+        justify-content: flex-start;
+        margin: 0;
+    }
+
     .bucketlist-scroll {
         width: 100%;
     }
-    
-    .bucketlist-map {
-        display: none;
+
+    .bucketlist-map, .leaflet-container {
+        position: relative;
+        margin: 0 auto;
+        width: 95%;
+        border-radius: 20px;
+        height: 650px;
+        box-shadow: 0 4px 6px 2px rgba(0, 0, 0, 0.125);
     }
+    
 }

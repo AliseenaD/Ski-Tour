@@ -22,6 +22,7 @@ model User {
   name       String
   skierType  String?
   skierLevel String?
+  picture    String?
   reviews    ReviewItem[]
   bucketList BucketList[]
 }
@@ -37,6 +38,15 @@ model Mountain {
   BucketList BucketList[]
 }
 
+model ReviewPhoto {
+  id         Int      @id @default(autoincrement()) 
+  review     ReviewItem @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reviewId   Int
+  picture    String
+
+  @@index([reviewId])
+}
+
 model ReviewItem {
   id         Int      @id @default(autoincrement())
   title      String   @db.VarChar(500) // 500 Character limit
@@ -46,6 +56,7 @@ model ReviewItem {
   authorId   Int
   mountain   Mountain @relation(fields: [mountainId], references: [id])
   mountainId Int
+  photos     ReviewPhoto[]
 }
 
 model BucketList {

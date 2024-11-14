@@ -1,7 +1,7 @@
 const API_URL = process.env.REACT_APP_API_URL;
 
 // Submit the edit profile form functionality
-export async function editProfile(name, skierType, skierLevel, accessToken) {
+export async function editProfile(name, skierType, skierLevel, photo, accessToken) {
     try {
         const response = await fetch(`${API_URL}/user`, {
             method: 'PUT',
@@ -12,7 +12,8 @@ export async function editProfile(name, skierType, skierLevel, accessToken) {
             body: JSON.stringify({
                 name,
                 skierType,
-                skierLevel
+                skierLevel,
+                photo
             })
         });
         if (!response.ok) {

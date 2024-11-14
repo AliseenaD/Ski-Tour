@@ -21,6 +21,7 @@ export default function ProfilePage() {
     const [isOwnProfile, setIsOwnProfile] = useState(false);
     const [settingsUp, setSettingsUp] = useState(false);
     const [userReviews, setUserReviews] = useState([]);
+    const [mountainsReviewed, setMountainsReviewed] = useState(0);
     const API_URL = process.env.REACT_APP_API_URL;
 
     // Set user reviews
@@ -33,6 +34,11 @@ export default function ProfilePage() {
             setUserReviews([]);
         }
     }, [userData, id]);
+
+    // Get the size of the mountain set every time reviews changes
+    useEffect(() => {
+        countMountains();
+    }, [userReviews]);
 
     // Fetch userData on page load
     useEffect(() => {
@@ -60,6 +66,13 @@ export default function ProfilePage() {
         catch (error) {
             console.log('Error fetching data: ', error);
         }
+    }
+
+    // Count the total different mountains
+    function countMountains() {
+        const totalMountains = userReviews.map(item => item.mountainId);
+        const mountainset = new Set(totalMountains);
+        setMountainsReviewed(mountainset.size);
     }
 
     // Fetches id specific user info
@@ -115,6 +128,7 @@ export default function ProfilePage() {
                     <div className="profile-info">
                         <div className="icon-settings">
                             {
+                                userData.picture ? (<div className="profile-photo" style={{backgroundImage: `url(${userData.picture})`}}></div>) :
                                 userData.skierType ? (
                                     userData.skierType === 'Ski' ? <FaPersonSkiing color="#205097" className="logo" size={55} /> : <FaPersonSnowboarding color="#205097" className="logo" size={55} />
                                 ) : <FaUser className="logo" color="#205097" size={55} />
@@ -133,8 +147,18 @@ export default function ProfilePage() {
                             )
                             : (<div className="user-info">
                                 <p id="user-name">{userData.name === userData.email ? 'Profile' : userData.name}</p>
-                                <p id="ski-type">Skier type: { userData.skierType ? displaySkierType(userData.skierType) : 'Not provided' }</p>
-                                <p id="ski-level">Skier level: { userData.skierLevel ? capitalizeFirstLetter(userData.skierLevel) : 'Not provided' }</p>
+                                <div className="user-information-group">
+                                    <p className="user-info-label">Skier type:</p>
+                                    <p className="user-info-description"> { userData.skierType ? displaySkierType(userData.skierType) : 'Not provided' }</p>
+                                </div>
+                                <div className="user-information-group">
+                                    <p className="user-info-label">Skier level:</p>
+                                    <p className="user-info-description"> { userData.skierLevel ? capitalizeFirstLetter(userData.skierLevel) : 'Not provided' }</p>
+                                </div>
+                                <div className="user-information-group">
+                                    <p className="user-info-label">Mountains reviewed:</p>
+                                    <p className="user-info-description"> {mountainsReviewed}</p>
+                                </div>
                             </div>)
                         }
                     </div>
