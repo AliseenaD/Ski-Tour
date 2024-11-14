@@ -166,12 +166,7 @@ app.get("/user", requireAuth, async (req, res) => {
         reviews: {
           include: {
             mountain: true, // Include mountain details
-            photos: {
-              select: {
-                id: true,
-                picture: true
-              }
-            }
+            photos: true
           }
         },
         bucketList: {

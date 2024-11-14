@@ -1,17 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
@@ -39,30 +33,30 @@ model Mountain {
 }
 
 model ReviewPhoto {
-  id         Int      @id @default(autoincrement()) 
-  review     ReviewItem @relation(fields: [reviewId], references: [id], onDelete: Cascade)
-  reviewId   Int
-  picture    String
+  id       Int        @id @default(autoincrement())
+  reviewId Int
+  picture  String
+  review   ReviewItem @relation(fields: [reviewId], references: [id], onDelete: Cascade)
 
   @@index([reviewId])
 }
 
 model ReviewItem {
-  id         Int      @id @default(autoincrement())
-  title      String   @db.VarChar(500) // 500 Character limit
+  id         Int           @id @default(autoincrement())
+  title      String        @db.VarChar(500)
   rating     Int
-  createdAt  DateTime @default(now())
-  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId   Int
-  mountain   Mountain @relation(fields: [mountainId], references: [id])
   mountainId Int
+  createdAt  DateTime      @default(dbgenerated("CURRENT_TIMESTAMP(3)"))
+  author     User          @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  mountain   Mountain      @relation(fields: [mountainId], references: [id])
   photos     ReviewPhoto[]
 }
 
 model BucketList {
   id         Int      @id @default(autoincrement())
-  mountain   Mountain @relation(fields: [mountainId], references: [id])
   mountainId Int
-  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId   Int
+  mountain   Mountain @relation(fields: [mountainId], references: [id])
+  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }
